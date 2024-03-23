@@ -6,12 +6,27 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    public static Player Instance { get; private set; }
+
     [SerializeField] float moveSpeed;
     [SerializeField] GameInput gameInput;
     [SerializeField] LayerMask counterLayerMask;
+
+    public event EventHandler<OnClearCounterInteractionChangeArgs> OnSelectedCounterChange;
+    public class OnClearCounterInteractionChangeArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
     private bool isWalking;
     private Vector3 lastInteractionDir;
+    private ClearCounter selectedCounter;
 
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+    }
 
     private void Start()
     {
@@ -64,8 +79,19 @@ public class Player : MonoBehaviour
         {
             if(raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
- 
+                // Has ClearCounter
+                if(clearCounter != selectedCounter)
+                {
+                    SetSelectedCounter(clearCounter);
+
+                }
+            } else
+            {
+                SetSelectedCounter(null);
             }
+        } else
+        {
+            SetSelectedCounter(null);
         }
         
         
@@ -133,10 +159,18 @@ public class Player : MonoBehaviour
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
     }
 
-
-
     public bool IsWalking()
     {
         return isWalking;
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChange?.Invoke(this, new OnClearCounterInteractionChangeArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
