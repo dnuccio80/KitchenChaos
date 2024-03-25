@@ -39,24 +39,29 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        //Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        //Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        if (moveDir != Vector3.zero)
+        //if (moveDir != Vector3.zero)
+        //{
+        //    lastInteractionDir = moveDir;
+        //}
+
+        //float interactionDistance = 2f;
+        //RaycastHit raycastHit;
+        //if (Physics.Raycast(transform.position, lastInteractionDir, out raycastHit, interactionDistance, counterLayerMask))
+        //{
+        //    if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+        //    {
+        //        // Has ClearCounter component
+        //        clearCounter.Interact(this);
+        //    }
+        //}
+
+        if(selectedCounter != null)
         {
-            lastInteractionDir = moveDir;
-        }
-
-        float interactionDistance = 2f;
-        RaycastHit raycastHit;
-        if (Physics.Raycast(transform.position, lastInteractionDir, out raycastHit, interactionDistance, counterLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                // Has ClearCounter component
-                clearCounter.Interact(this);
-            }
+            selectedCounter.Interact(this);
         }
     }
 
