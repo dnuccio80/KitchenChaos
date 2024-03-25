@@ -249,8 +249,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd4697edd2e43a4ebc76d3568836a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 1491588096485557558}
-  selectedCounterVisual: {fileID: 4521217818668220864}
+  baseCounter: {fileID: 1491588096485557558}
+  selectedCounterVisual:
+  - {fileID: 4521217818668220864}
 --- !u!1001 &7835037117708391740
 PrefabInstance:
   m_ObjectHideFlags: 0
