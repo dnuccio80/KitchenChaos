@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Drawing;
@@ -5,10 +6,15 @@ using UnityEngine;
 
 public class PlateKitchenObject : KitchenObject
 {
+    public event EventHandler<OnIngredientAddedEventArgs> OnIngredientAdded;
+    public class OnIngredientAddedEventArgs : EventArgs
+    {
+        public KitchenObjectSO kitchenObjectSO;
+    }
 
     [SerializeField] private List<KitchenObjectSO> validKitchenSOList;
-    private List<KitchenObjectSO> kitchenObjectSOList;
 
+    private List<KitchenObjectSO> kitchenObjectSOList;
     private void Awake()
     {
         kitchenObjectSOList = new List<KitchenObjectSO>(); 
@@ -30,6 +36,10 @@ public class PlateKitchenObject : KitchenObject
         else
         {
             kitchenObjectSOList.Add(kitchenObjectSO);
+            OnIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs
+            {
+                kitchenObjectSO = kitchenObjectSO
+            }) ;
             return true;
         }
 
