@@ -18,7 +18,6 @@ public class PlatesCounter : BaseCounter, IKitchenObjectParent
     private void Update()
     {
         spawnPlateTimer += Time.deltaTime;
-        Debug.Log(spawnPlateTimer);
 
         if(spawnPlateTimer > spawnPlateTimerMax )
         {
