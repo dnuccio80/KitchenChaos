@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
 {
 
     [SerializeField] protected Transform counterTopPoint;
+    public static event EventHandler OnAnyObjectDroped;
+    public static event EventHandler OnAnyObjectPicked;
 
     private KitchenObject kitchenObject;
 
