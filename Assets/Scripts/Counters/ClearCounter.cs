@@ -6,8 +6,6 @@ using UnityEngine;
 public class ClearCounter : BaseCounter
 {
 
-    public static event EventHandler OnAnyObjectDroped;
-    public static event EventHandler OnAnyObjectPicked;
     public override void Interact(Player player)
     {
         if (!HasKitchenObject())
@@ -17,7 +15,6 @@ public class ClearCounter : BaseCounter
             {
                 // Player is carrying something
                 player.GetKitchenObject().SetKitchenObjectParent(this);
-                OnAnyObjectDroped?.Invoke(this, EventArgs.Empty);
             }           
 
         } else
@@ -29,7 +26,7 @@ public class ClearCounter : BaseCounter
 
                 // Give the KitchenObject to the player
                 GetKitchenObject().SetKitchenObjectParent(player);
-                OnAnyObjectPicked?.Invoke(this, EventArgs.Empty);
+
             } else
             {
                 // Player is carrying something
@@ -40,7 +37,7 @@ public class ClearCounter : BaseCounter
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
                         GetKitchenObject().DestroySelf();
-                        OnAnyObjectPicked?.Invoke(this, EventArgs.Empty);
+
 
                     }
                 } else
@@ -51,8 +48,6 @@ public class ClearCounter : BaseCounter
                         if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
                         {
                             player.GetKitchenObject().DestroySelf();
-                            OnAnyObjectPicked?.Invoke(this, EventArgs.Empty);
-
                         }
 
                     }

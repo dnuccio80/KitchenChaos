@@ -8,6 +8,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     public static Player Instance { get; private set; }
 
+    public event EventHandler OnPickedSomething;
+
     [SerializeField] float moveSpeed;
     [SerializeField] GameInput gameInput;
     [SerializeField] LayerMask counterLayerMask;
@@ -180,6 +182,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject _kitchenObject)
     {
         kitchenObject = _kitchenObject;
+
+        if (kitchenObject != null) OnPickedSomething?.Invoke(this, EventArgs.Empty);
     }
 
     public KitchenObject GetKitchenObject()

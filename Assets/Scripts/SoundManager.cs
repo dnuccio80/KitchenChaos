@@ -7,20 +7,37 @@ using UnityEngine.Rendering;
 public class SoundManager : MonoBehaviour
 {
 
+    public static SoundManager Instance {  get; private set; }
+
+
     [SerializeField] private SoundListSO soundListSO;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
         CuttingCounter.OnAnyCut += CuttingCounter_OnAnyCut;
-        CuttingCounter.OnObjectDropedHere += CuttingCounter_OnObjectDropedHere;
-        CuttingCounter.OnObjectPicked += CuttingCounter_OnObjectPicked;
+        BaseCounter.OnAnyObjectDropedHere += BaseCounter_OnAnyObjectDropedHere;
         DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
         DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
-        ClearCounter.OnAnyObjectPicked += ClearCounter_OnAnyObjectPicked;
-        ClearCounter.OnAnyObjectDroped += ClearCounter_OnAnyObjectDroped;
         PlatesCounter.Instance.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
-        ContainerCounter.OnObjectPicked += ContainerCounter_OnObjectPicked;
         TrashCounter.OnObjectTrashed += TrashCounter_OnObjectTrashed;
+        Player.Instance.OnPickedSomething += Player_OnPickedSomething;
+    }
+
+    private void Player_OnPickedSomething(object sender, System.EventArgs e)
+    {
+        Player player = (Player)sender; 
+        PlaySoundArray(soundListSO.objectPickUpArray, player.gameObject.transform.position);
+    }
+
+    private void BaseCounter_OnAnyObjectDropedHere(object sender, System.EventArgs e)
+    {
+        BaseCounter baseCounter = (BaseCounter)sender;
+        PlaySoundArray(soundListSO.objectDropArray, baseCounter.gameObject.transform.position);
     }
 
     private void TrashCounter_OnObjectTrashed(object sender, System.EventArgs e)
@@ -30,27 +47,9 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    private void ContainerCounter_OnObjectPicked(object sender, System.EventArgs e)
-    {
-        ContainerCounter containerCounter = (ContainerCounter)sender;
-        PlaySoundArray(soundListSO.objectPickUpArray, containerCounter.gameObject.transform.position);
-    }
-
     private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)
     {
         PlaySoundArray(soundListSO.objectPickUpArray, PlatesCounter.Instance.transform.position);
-    }
-
-    private void ClearCounter_OnAnyObjectDroped(object sender, System.EventArgs e)
-    {
-        ClearCounter clearCounter = (ClearCounter)sender;
-        PlaySoundArray(soundListSO.objectDropArray, clearCounter.gameObject.transform.position);
-    }
-
-    private void ClearCounter_OnAnyObjectPicked(object sender, System.EventArgs e)
-    {
-        ClearCounter clearCounter = (ClearCounter)sender;
-        PlaySoundArray(soundListSO.objectPickUpArray, clearCounter.gameObject.transform.position);
     }
 
     private void DeliveryManager_OnRecipeFailed(object sender, System.EventArgs e)
@@ -65,18 +64,6 @@ public class SoundManager : MonoBehaviour
         PlaySoundArray(soundListSO.deliverySuccessArray, deliveryManager.gameObject.transform.position);
     }
 
-    private void CuttingCounter_OnObjectPicked(object sender, System.EventArgs e)
-    {
-        CuttingCounter cuttingCounter = (CuttingCounter)sender;
-        PlaySoundArray(soundListSO.objectPickUpArray, cuttingCounter.gameObject.transform.position);
-    }
-
-    private void CuttingCounter_OnObjectDropedHere(object sender, System.EventArgs e)
-    {
-        CuttingCounter cuttingCounter = (CuttingCounter)sender;
-        PlaySoundArray(soundListSO.objectDropArray, cuttingCounter.gameObject.transform.position);
-    }
-
     private void CuttingCounter_OnAnyCut(object sender, System.EventArgs e)
     {
         CuttingCounter cuttingCounter = (CuttingCounter)sender;
@@ -86,6 +73,10 @@ public class SoundManager : MonoBehaviour
     private void PlaySoundArray(AudioClip[] clips, Vector3 position, float volume = 1f)
     {
         AudioSource.PlayClipAtPoint(clips[Random.Range(0, clips.Length)], position, volume);
+    }
+    public void PlayFootStep(Vector3 position, float volume)
+    {
+        AudioSource.PlayClipAtPoint(soundListSO.footStepArray[Random.Range(0, soundListSO.footStepArray.Length)], position, volume);
     }
 
 
