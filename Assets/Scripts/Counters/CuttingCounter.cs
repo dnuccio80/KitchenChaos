@@ -10,6 +10,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
     public static event EventHandler OnAnyCut;
+    public static event EventHandler OnObjectDropedHere;
+    public static event EventHandler OnObjectPicked;
     public event EventHandler OnCut;
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
@@ -26,6 +28,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 if(HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO())) {
                     // Player is carrying a kitchenObject available to cut
                     player.GetKitchenObject().SetKitchenObjectParent(this);
+                    OnObjectDropedHere?.Invoke(this, EventArgs.Empty);
                     cuttingProgress = 0;
 
                     CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput((GetKitchenObject().GetKitchenObjectSO()));
@@ -47,6 +50,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 // Player has nothing
                 // Give the KitchenObject to the player
                 GetKitchenObject().SetKitchenObjectParent(player);
+                OnObjectPicked?.Invoke(this, EventArgs.Empty);   
             }  else
             {
                 if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
@@ -54,6 +58,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                     // Player is holding a plate
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
+                        OnObjectPicked?.Invoke(this, EventArgs.Empty);
                         GetKitchenObject().DestroySelf();
                     }
                 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlatesCounter : BaseCounter, IKitchenObjectParent
 {
+    public static PlatesCounter Instance {  get; private set; }
+
     public event EventHandler OnPlateSpawned;
     public event EventHandler OnPlateRemoved;
 
@@ -14,6 +16,10 @@ public class PlatesCounter : BaseCounter, IKitchenObjectParent
     private int plateSpawnedAmount;
     private int plateSpawnedAmountMax = 4;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Update()
     {
