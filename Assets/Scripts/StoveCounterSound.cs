@@ -17,9 +17,15 @@ public class StoveCounterSound : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.OnVolumeChanged += SoundManager_OnVolumeChanged;
         stoveCounter.OnStateChange += StoveCounter_OnStateChange;
         audioSource.clip = soundListSO.stoveFrying;
 
+    }
+
+    private void SoundManager_OnVolumeChanged(object sender, SoundManager.OnVolumeChangedArgs e)
+    {
+        audioSource.volume = e.volume;
     }
 
     private void StoveCounter_OnStateChange(object sender, StoveCounter.OnStateChangeArgs e)

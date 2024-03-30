@@ -12,6 +12,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
     public static event EventHandler OnAnyCut;
     public event EventHandler OnCut;
 
+    public static void ResetStaticData()
+    {
+        OnAnyCut = null;
+    }
+
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
 
     private int cuttingProgress;
