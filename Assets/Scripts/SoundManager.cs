@@ -92,6 +92,11 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(soundListSO.footStepArray[UnityEngine.Random.Range(0, soundListSO.footStepArray.Length)], position, volume * volumeMultiplier);
     }
 
+    public void PlayCountdownSound()
+    {
+        AudioSource.PlayClipAtPoint(soundListSO.warningArray[0], Vector3.zero);
+    }
+
     public float GetVolume()
     {
         return volume;

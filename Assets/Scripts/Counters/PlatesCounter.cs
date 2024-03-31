@@ -29,7 +29,7 @@ public class PlatesCounter : BaseCounter, IKitchenObjectParent
         {
             spawnPlateTimer = 0f;
 
-            if(plateSpawnedAmount < plateSpawnedAmountMax)
+            if(GameManager.Instance.IsGamePlaying() && plateSpawnedAmount < plateSpawnedAmountMax)
             {
                 plateSpawnedAmount++;
 
