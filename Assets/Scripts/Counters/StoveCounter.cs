@@ -38,6 +38,27 @@ public class StoveCounter : BaseCounter, IHasProgress
     private void Start()
     {
         state = State.Idle;
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, EventArgs e)
+    {
+        if (GetKitchenObject() != null)
+        {
+            GetKitchenObject().DestroySelf();
+            state = State.Idle;
+            OnStateChange?.Invoke(this, new OnStateChangeArgs
+            {
+                state = state
+            });
+
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressNormalized = 0f
+            });
+
+        }
+
     }
 
     private void Update()

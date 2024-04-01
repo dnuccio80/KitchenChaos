@@ -17,10 +17,15 @@ public class DeliveryManagerUI : MonoBehaviour
     {
         DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
         DeliveryManager.Instance.OnRecipeDelivered += DeliveryManager_OnRecipeDelivered;
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
         UpdateVisual();
 
     }
 
+    private void GameManager_OnGameReset(object sender, System.EventArgs e)
+    {
+        UpdateVisual();
+    }
 
     private void DeliveryManager_OnRecipeSpawned(object sender, System.EventArgs e)
     {

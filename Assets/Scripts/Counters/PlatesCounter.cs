@@ -21,6 +21,25 @@ public class PlatesCounter : BaseCounter, IKitchenObjectParent
         Instance = this;
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, EventArgs e)
+    {
+        plateSpawnedAmount = 0;
+        spawnPlateTimer = 0;
+
+        foreach(Transform child in counterTopPoint)
+        {
+            if (child != null)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
     private void Update()
     {
         spawnPlateTimer += Time.deltaTime;

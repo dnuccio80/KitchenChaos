@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnStateChange;
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnpaused;
+    public event EventHandler OnGameReset;
 
     private enum State
     {
@@ -21,7 +22,8 @@ public class GameManager : MonoBehaviour
     }
 
     private State state;
-    private float countdownToStartTimer = 3f;
+    private float countdownToStartTimer;
+    private float countdownToStartTimerMax = 3f;
     private float gamePlayingTimer;
     private float gamePlayingTimerMax = 180f;
     private bool isGamePaused = false;
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
         switch(state)
         {
             case State.WaitingToStart:
-               
+                countdownToStartTimer = countdownToStartTimerMax;
                 break;
             case State.CountdownToStart:
                 countdownToStartTimer -= Time.deltaTime;
@@ -124,5 +126,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetGame()
+    {
+        isGamePaused = false;
+        state = State.WaitingToStart;
+        OnStateChange?.Invoke(this, EventArgs.Empty);
+        OnGameReset?.Invoke(this, EventArgs.Empty);
+    }
 
 }

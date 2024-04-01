@@ -28,6 +28,17 @@ public class DeliveryManager : MonoBehaviour
         waitingRecipeSOList = new List<RecipeSO>();
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, EventArgs e)
+    {
+        recipesDeliveredSuccess = 0;
+        waitingRecipeSOList.Clear();
+    }
+
     private void Update()
     {
         spawnRecipeTimer -= Time.deltaTime;
@@ -93,7 +104,6 @@ public class DeliveryManager : MonoBehaviour
         // No matches found !
         // Player did not deliver a correct recipe!
         OnRecipeFailed?.Invoke(this, EventArgs.Empty);
-        Debug.Log("Player did not deliver a correct recipe!");
     }
 
     public List<RecipeSO> GetWaitingRecipeSOList()

@@ -22,6 +22,12 @@ public class PlatesCounterVisual : MonoBehaviour
     {
         platesCounter.OnPlateSpawned += PlatesCounter_OnPlateSpawned;
         platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, System.EventArgs e)
+    {
+        plateGameObjectList.Clear();
     }
 
     private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)

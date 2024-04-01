@@ -6,6 +6,19 @@ using UnityEngine;
 public class ClearCounter : BaseCounter
 {
 
+    private void Start()
+    {
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, EventArgs e)
+    {
+        if(GetKitchenObject() != null)
+        {
+            GetKitchenObject().DestroySelf();
+        }
+    }
+
     public override void Interact(Player player)
     {
         if (!HasKitchenObject())

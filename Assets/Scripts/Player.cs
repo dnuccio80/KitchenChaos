@@ -38,6 +38,17 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
         gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
+        GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    private void GameManager_OnGameReset(object sender, EventArgs e)
+    {
+        transform.position = Vector3.zero;
+        if(GetKitchenObject() != null)
+        {
+            GetKitchenObject().DestroySelf();
+        }
+
     }
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
