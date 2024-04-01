@@ -97,6 +97,11 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(soundListSO.warningArray[0], Vector3.zero);
     }
 
+    public void PlayWarningStoveSound(Vector3 position)
+    {
+        AudioSource.PlayClipAtPoint(soundListSO.warningArray[1], position);
+    }
+
     public float GetVolume()
     {
         return volume;
