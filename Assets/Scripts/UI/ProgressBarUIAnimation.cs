@@ -23,9 +23,9 @@ public class ProgressBarUIAnimation : MonoBehaviour
     private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
         float burningWarningTime = .5f;
+        bool show = e.progressNormalized > burningWarningTime;
 
-        if (stoveCounter.GetFriedStateIsActive() && e.progressNormalized > burningWarningTime) animator.SetBool(IS_FLASHING, true);
-        else animator.SetBool(IS_FLASHING, false);
+        if(stoveCounter.GetFriedStateIsActive()) animator.SetBool(IS_FLASHING, show); 
 
     }
 
