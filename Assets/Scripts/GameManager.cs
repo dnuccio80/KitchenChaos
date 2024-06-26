@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
 
     private State state;
     private float countdownToStartTimer;
-    private float countdownToStartTimerMax = 3f;
+    private float countdownToStartTimerMax = 1f;
     private float gamePlayingTimer;
-    private float gamePlayingTimerMax = 180f;
+    private float gamePlayingTimerMax = 300f;
     private bool isGamePaused = false;
 
     private void Awake()
@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
         state = State.WaitingToStart;
         GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+
+        state = State.CountdownToStart;
+        OnStateChange?.Invoke(this, EventArgs.Empty);
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)

@@ -12,13 +12,13 @@ public class ContainerCounter : BaseCounter
 
     public override void Interact(Player player)
     {
-        if (!Player.Instance.HasKitchenObject())
-        {
+        //if (!Player.Instance.HasKitchenObject())
+        //{
 
-            KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
-            OnObjectPicked?.Invoke(this, EventArgs.Empty);
-            OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
-        }
+        //    KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
+        //    OnObjectPicked?.Invoke(this, EventArgs.Empty);
+        //    OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+        //}
 
     }
 
