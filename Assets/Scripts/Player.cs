@@ -6,8 +6,14 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour, IKitchenObjectParent
 {
+    public static event EventHandler OnAnyPlayerSpawned;
 
-    //public static Player Instance { get; private set; }
+    public static void ResetStaticDataManager()
+    {
+        OnAnyPlayerSpawned = null;
+    }
+
+    public static Player LocalInstance { get; private set; }
 
     public event EventHandler OnPickedSomething;
 
@@ -39,6 +45,13 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
         GameInput.Instance.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
         GameManager.Instance.OnGameReset += GameManager_OnGameReset;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if(IsOwner) LocalInstance = this;
+
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void GameManager_OnGameReset(object sender, EventArgs e)
