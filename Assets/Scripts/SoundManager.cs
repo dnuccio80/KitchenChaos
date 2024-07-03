@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour
         DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
         PlatesCounter.Instance.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnObjectTrashed;
-        Player.Instance.OnPickedSomething += Player_OnPickedSomething;
+        //Player.Instance.OnPickedSomething += Player_OnPickedSomething;
     }
 
     private void Player_OnPickedSomething(object sender, System.EventArgs e)
