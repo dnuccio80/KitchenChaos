@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
         GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
         GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
 
+
+        // Debug trigger game start automatically
         state = State.CountdownToStart;
         OnStateChange?.Invoke(this, EventArgs.Empty);
     }
