@@ -6268,6 +6268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d4b74f8f61a2341b43031e50f8b3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kitchenObjectListSO: {fileID: 11400000, guid: 536a2b970f669cb40b8ec38e481f6235,
+    type: 2}
 --- !u!114 &660378893
 MonoBehaviour:
   m_ObjectHideFlags: 0
