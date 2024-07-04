@@ -7,10 +7,11 @@ using UnityEngine;
 public class Player : NetworkBehaviour, IKitchenObjectParent
 {
     public static event EventHandler OnAnyPlayerSpawned;
-
+    public static event EventHandler OnAnyPickedSomething;
     public static void ResetStaticDataManager()
     {
         OnAnyPlayerSpawned = null;
+        OnAnyPickedSomething = null;
     }
 
     public static Player LocalInstance { get; private set; }
@@ -207,7 +208,12 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     {
         kitchenObject = _kitchenObject;
 
-        if (kitchenObject != null) OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        if (kitchenObject != null)
+        {
+            OnPickedSomething?.Invoke(this, EventArgs.Empty);
+            OnAnyPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
     public KitchenObject GetKitchenObject()

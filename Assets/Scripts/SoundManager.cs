@@ -38,13 +38,13 @@ public class SoundManager : MonoBehaviour
         DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
         PlatesCounter.Instance.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnObjectTrashed;
-        //Player.Instance.OnPickedSomething += Player_OnPickedSomething;
+        Player.OnAnyPickedSomething += Player_OnAnyPickedSomething;
     }
 
-    private void Player_OnPickedSomething(object sender, System.EventArgs e)
+    private void Player_OnAnyPickedSomething(object sender, System.EventArgs e)
     {
         Player player = (Player)sender; 
-        PlaySoundArray(soundListSO.objectPickUpArray, player.gameObject.transform.position);
+        PlaySoundArray(soundListSO.objectPickUpArray, player.transform.position);
     }
 
     private void BaseCounter_OnAnyObjectDropedHere(object sender, System.EventArgs e)
