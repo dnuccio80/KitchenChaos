@@ -6,8 +6,14 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour, IKitchenObjectParent
 {
+    public static event EventHandler OnAnyPlayerSpawned;
 
-    //public static Player Instance { get; private set; }
+    public static void ResetStaticDataManager()
+    {
+        OnAnyPlayerSpawned = null;
+    }
+
+    public static Player LocalInstance { get; private set; }
 
     public event EventHandler OnPickedSomething;
 
@@ -18,7 +24,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     private KitchenObject kitchenObject;
 
 
-    public event EventHandler<OnClearCounterInteractionChangeArgs> OnSelectedCounterChange;
+    public event EventHandler<OnClearCounterInteractionChangeArgs> OnSelectedCounterChanged;
     public class OnClearCounterInteractionChangeArgs : EventArgs
     {
         public BaseCounter selectedCounter;
@@ -28,9 +34,11 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     private Vector3 lastInteractionDir;
     private BaseCounter selectedCounter;
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
-        //Instance = this;
+        if(IsOwner) LocalInstance = this;
+
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void Start()
@@ -184,7 +192,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     {
         this.selectedCounter = selectedCounter;
 
-        OnSelectedCounterChange?.Invoke(this, new OnClearCounterInteractionChangeArgs
+        OnSelectedCounterChanged?.Invoke(this, new OnClearCounterInteractionChangeArgs
         {
             selectedCounter = selectedCounter
         });
