@@ -45,7 +45,7 @@ public class StoveCounter : BaseCounter, IHasProgress
     {
         if (GetKitchenObject() != null)
         {
-            GetKitchenObject().DestroySelf();
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
             state = State.Idle;
             OnStateChange?.Invoke(this, new OnStateChangeArgs
             {
@@ -81,7 +81,7 @@ public class StoveCounter : BaseCounter, IHasProgress
                     if (fryingTimer > fryingRecipeSO.fryingTimerMax)
                     {
                         // Fried !
-                        GetKitchenObject().DestroySelf();
+                        KitchenObject.DestroyKitchenObject(GetKitchenObject());
                         KitchenObject.SpawnKitchenObject(fryingRecipeSO.output, this);
 
                         state = State.Fried;
@@ -106,7 +106,7 @@ public class StoveCounter : BaseCounter, IHasProgress
                     if (burnedTimer > burningRecipeSO.BurningTimerMax)
                     {
                         // Fried !
-                        GetKitchenObject().DestroySelf();
+                        KitchenObject.DestroyKitchenObject(GetKitchenObject());
                         KitchenObject.SpawnKitchenObject(burningRecipeSO.output, this);
 
                         state = State.Burned;
@@ -181,7 +181,7 @@ public class StoveCounter : BaseCounter, IHasProgress
                     // Player is holding a plate
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
-                        GetKitchenObject().DestroySelf();
+                        KitchenObject.DestroyKitchenObject(GetKitchenObject());
 
                         // Give the KitchenObject to the player
                         state = State.Idle;

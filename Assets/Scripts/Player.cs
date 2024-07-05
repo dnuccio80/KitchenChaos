@@ -54,7 +54,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
         transform.position = Vector3.zero;
         if(GetKitchenObject() != null)
         {
-            GetKitchenObject().DestroySelf();
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
         }
 
     }
