@@ -20,7 +20,7 @@ public class FlashWarningUI : MonoBehaviour
     {
         float burningWarningTime = .5f;
 
-        if (stoveCounter.GetFriedStateIsActive() && e.progressNormalized > burningWarningTime)
+        if (stoveCounter.IsFried() && e.progressNormalized > burningWarningTime)
         {
             Show();
             PlayWarningSound();

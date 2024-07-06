@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class StoveCounterVisual : MonoBehaviour
 
     private void Start()
     {
-        stoveCounter.OnStateChange += StoveCounter_OnStateChange;
+        stoveCounter.OnStateChanged += StoveCounter_OnStateChange;
         Hide();
     }
 
@@ -17,8 +18,8 @@ public class StoveCounterVisual : MonoBehaviour
     {
         bool showVisual = e.state == StoveCounter.State.Frying || e.state == StoveCounter.State.Fried;
 
-        if (showVisual) Show();
-        else Hide();
+        (showVisual ? (Action) Show : Hide)();
+
     }
 
     private void Show()
