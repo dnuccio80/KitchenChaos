@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IHasProgress
@@ -40,16 +41,12 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 // Player is carrying something
                 if(HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO())) {
                     // Player is carrying a kitchenObject available to cut
-                    player.GetKitchenObject().SetKitchenObjectParent(this);
-                    cuttingProgress = 0;
 
-                    CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput((GetKitchenObject().GetKitchenObjectSO()));
+                    KitchenObject kitchenObject = player.GetKitchenObject();
 
+                    kitchenObject.SetKitchenObjectParent(this);
 
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-                    {
-                        progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
-                    });
+                    InteractLogicPlaceObjectOnCounterServerRpc();
                 }
             }
 
@@ -77,28 +74,66 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void InteractLogicPlaceObjectOnCounterServerRpc()
+    {
+        InteractLogicPlaceObjectOnCounterClientRpc();
+    }
+
+    [ClientRpc]
+    private void InteractLogicPlaceObjectOnCounterClientRpc()
+    {
+        cuttingProgress = 0;
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = 0f
+        });;
+    }
+
     public override void InteractAlternate(Player player)
     {
         if(HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
             // There is a kitchenObject here and can be cut
-            cuttingProgress++;
-            CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput((GetKitchenObject().GetKitchenObjectSO()));
+            InteractAlternateLogicServerRpc();
+            TestCuttungProgressDoneServerRpc();
+        }
+    }
 
-            OnCut?.Invoke(this, EventArgs.Empty);
-            OnAnyCut?.Invoke(this, EventArgs.Empty);
+    [ServerRpc (RequireOwnership = false)]
+    private void InteractAlternateLogicServerRpc()
+    {
+        InteractAlternateLogicClientRpc();
+    }
 
-            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-            {
-                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
-            });
+    [ClientRpc]
+    private void InteractAlternateLogicClientRpc()
+    {
+        cuttingProgress++;
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput((GetKitchenObject().GetKitchenObjectSO()));
 
-            if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
-            {
-                KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
-                KitchenObject.DestroyKitchenObject(GetKitchenObject());
-                KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
-            }            
+        OnCut?.Invoke(this, EventArgs.Empty);
+        OnAnyCut?.Invoke(this, EventArgs.Empty);
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+        });
+
+        
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TestCuttungProgressDoneServerRpc()
+    {
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput((GetKitchenObject().GetKitchenObjectSO()));
+
+        if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
+        {
+            KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
+            KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
         }
     }
 

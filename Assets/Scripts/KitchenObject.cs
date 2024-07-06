@@ -91,9 +91,4 @@ public class KitchenObject : NetworkBehaviour
         KitchenGameMultiplayer.Instance.DestroyKitchenObject(kitchenObject);
     }
 
-    public NetworkObject GetNetworkObject()
-    {
-        return NetworkObject;
-    }
-
 }
