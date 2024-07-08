@@ -18,7 +18,7 @@ public class CountdownUI : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnStateChange += GameManager_OnStateChange;
+        GameManager.Instance.OnStateChanged += GameManager_OnStateChange;
         Hide();
     }
 
