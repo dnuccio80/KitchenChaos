@@ -1,7 +1,9 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +20,7 @@ public class GameOverUI : MonoBehaviour
     {
         newGameButton.onClick.AddListener(() =>
         {
+            //NetworkManager.Singleton.Shutdown();
             GameManager.Instance.ResetGame();
         });
     }
