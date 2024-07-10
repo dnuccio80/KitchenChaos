@@ -152,6 +152,11 @@ public class GameManager : NetworkBehaviour
         return state.Value == State.CountdownToStart;
     }
 
+    public bool IsWaitingToStart()
+    {
+        return state.Value == State.WaitingToStart;
+    }
+
     public bool IsGameOver()
     {
         return state.Value == State.GameOver;
