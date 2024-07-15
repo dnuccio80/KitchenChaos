@@ -17,12 +17,9 @@ public class HostDisconnectedUI : MonoBehaviour
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.Log("ClientId: " + clientId);
-        Debug.Log("ServerClientId: " + NetworkManager.ServerClientId);
         if(clientId == NetworkManager.ServerClientId)
         {
             //Server is shutting down
-            Debug.Log("se desconectó el servidor");
             Show();
         }
     }
@@ -35,5 +32,11 @@ public class HostDisconnectedUI : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
+
     }
 }
